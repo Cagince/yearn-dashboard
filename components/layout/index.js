@@ -1,6 +1,13 @@
 import { Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
 import styled from 'styled-components';
+import Navigation from './navigation';
+
+const StyledHeader = styled(Header)`
+    background: #fff;
+    border-bottom: 1px solid #f0f0f0;
+    height: 60px;
+`;
 
 const StyledLogo = styled.img`
     height: 40px;
@@ -11,10 +18,10 @@ const withLayout = Component => () => {
     return (
         <Layout style={{ minHeight: '100vh' }}>
             <Layout className="site-layout">
-                <Header style={{ background: '#fff'}} >
+                <StyledHeader>
                     <StyledLogo src={"/yearn-logo.png"} alt="yearn-logo" />
-
-                </Header>
+                </StyledHeader>
+                <Navigation />
                 <Content style={{ margin: '2em' }}>
                     <div className="site-layout-background" style={{ padding: 24, minHeight: 360, background: 'white' }}>
                         <Component />
