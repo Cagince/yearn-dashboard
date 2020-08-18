@@ -1,6 +1,10 @@
+import withLayout from '../components/layout';
 
-export default function Home() {
+function Home() {
   return (
     <div>yearn.finance</div>
-  )
+  );
 }
+
+
+export default withLayout(Home);
