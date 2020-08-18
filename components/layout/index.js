@@ -1,29 +1,33 @@
 import { Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
 import styled from 'styled-components';
-import Navigation from './navigation';
+import { MainNavigationBar, ProductsNavigationBar } from './navigation';
 
 const StyledHeader = styled(Header)`
     background: #fff;
     border-bottom: 1px solid #f0f0f0;
-    height: 60px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const StyledLogo = styled.img`
     height: 40px;
 `;
 
-const withLayout = Component => () => {
+export const createPage = (Component, SubHeader) => () => {
 
     return (
         <Layout style={{ minHeight: '100vh' }}>
-            <Layout className="site-layout">
+            <Layout>
                 <StyledHeader>
                     <StyledLogo src={"/yearn-logo.png"} alt="yearn-logo" />
+                    <MainNavigationBar />
                 </StyledHeader>
-                <Navigation />
+                {SubHeader && <SubHeader />}
                 <Content style={{ margin: '2em' }}>
-                    <div className="site-layout-background" style={{ padding: 24, minHeight: 360, background: 'white' }}>
+                    <div style={{ padding: 24, minHeight: 360, background: 'white' }}>
                         <Component />
                     </div>
                 </Content>
@@ -35,4 +39,5 @@ const withLayout = Component => () => {
     )
 };
 
-export default withLayout;
+export const createProductPage = (Component) => createPage(Component, ProductsNavigationBar);
+

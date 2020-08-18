@@ -1,4 +1,4 @@
-import withLayout from '../components/layout';
+import { createPage } from "../components/layout";
 
 function Home() {
   return (
@@ -7,4 +7,4 @@ function Home() {
 }
 
 
-export default withLayout(Home);
+export default createPage(Home);
