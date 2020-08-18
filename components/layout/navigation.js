@@ -14,15 +14,6 @@ const StyledProductsMenuWrapper = styled.div`
     padding: 0 8em;
 `;
 
-const Routes = [
-    { key: 'about', label: 'About', path: '/about' },
-    { key: 'documentation', label: 'Documentation', path: '/documentation' },
-    { key: 'learn', label: 'Learn', path: '/learn' },
-    { key: 'products', label: 'Products', path: '/producst/earn' },
-    { key: 'governance', label: 'Governance', path: '/gov' },
-];
-
-
 const ProductRoutes = [
     { key: 'earn', label: 'Earn', path: '/products/earn' },
     { key: 'zap', label: 'Zap', path: '/products/zap' },
@@ -30,14 +21,28 @@ const ProductRoutes = [
     { key: 'vaults', label: 'Vaults', path: '/products/vaults' },
 ];
 
+const Routes = [
+    { key: 'about', label: 'About', path: '/about' },
+    { key: 'documentation', label: 'Documentation', path: '/documentation', external: 'https://docs.yearn.finance/' },
+    { key: 'learn', label: 'Learn', path: '/learn', external: 'https://www.learnyearn.finance/' },
+    { key: 'products', label: 'Products', path: ProductRoutes[0].path },
+    { key: 'governance', label: 'Governance', path: '/gov', external: 'https://gov.yearn.finance/' },
+];
+
+
 const routeToMainKey = (path) => path.split('/')[1];
 const routeToProductKey = (path) => path.split('/')[2];
 
-const MenuItem = ({ key, label, path }) => (
+const MenuItem = ({ key, label, path, external }) => (
     <Item key={key}>
-        <Link href={path} as={path}>
-            <a>{label}</a>
-        </Link>
+        {external 
+            ? <a {...{ href: external, target: '_blank' }}>{label}</a>
+            : (
+                <Link {...{ href: path, as: path }} >
+                    <a>{label}</a>
+                </Link>
+            )
+        }
     </Item>
 );
 

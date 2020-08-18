@@ -1,5 +1,6 @@
 import { Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
+import Link from 'next/link'
 import styled from 'styled-components';
 import { MainNavigationBar, ProductsNavigationBar } from './navigation';
 
@@ -14,6 +15,7 @@ const StyledHeader = styled(Header)`
 
 const StyledLogo = styled.img`
     height: 40px;
+    cursor: pointer;
 `;
 
 export const createPage = (Component, SubHeader) => () => {
@@ -22,7 +24,9 @@ export const createPage = (Component, SubHeader) => () => {
         <Layout style={{ minHeight: '100vh' }}>
             <Layout>
                 <StyledHeader>
-                    <StyledLogo src={"/yearn-logo.png"} alt="yearn-logo" />
+                    <Link href="/" as="/">
+                        <StyledLogo src={"/yearn-logo.png"} alt="yearn-logo" />
+                    </Link>
                     <MainNavigationBar />
                 </StyledHeader>
                 {SubHeader && <SubHeader />}
