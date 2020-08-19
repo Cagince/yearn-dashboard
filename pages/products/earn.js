@@ -1,9 +1,8 @@
 import { createProductPage } from "../../components/layout";
+import EarnProductView from "../../components/products/earn";
 
 function Earn() {
-  return (
-    <div>yearn.finance | Earn </div>
-  );
+  return (<EarnProductView />);
 }
 
 

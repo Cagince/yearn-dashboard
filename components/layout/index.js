@@ -1,4 +1,4 @@
-import { Layout } from 'antd';
+import { Row, Col, Layout } from 'antd';
 const { Header, Content, Footer } = Layout;
 import Link from 'next/link'
 import styled from 'styled-components';
@@ -18,6 +18,13 @@ const StyledLogo = styled.img`
     cursor: pointer;
 `;
 
+const StyledName = styled.span`
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #242A31;
+    margin-left: 0.5em;
+`
+
 export const createPage = (Component, SubHeader) => () => {
 
     return (
@@ -25,15 +32,20 @@ export const createPage = (Component, SubHeader) => () => {
             <Layout>
                 <StyledHeader>
                     <Link href="/" as="/">
-                        <StyledLogo src={"/yearn-logo.png"} alt="yearn-logo" />
+                        <a>
+                            <StyledLogo src={"/yearn-logo.png"} alt="yearn-logo" /> 
+                            <StyledName>yearn.finance</StyledName>
+                        </a>
                     </Link>
                     <MainNavigationBar />
                 </StyledHeader>
                 {SubHeader && <SubHeader />}
                 <Content style={{ margin: '2em' }}>
-                    <div style={{ padding: 24, minHeight: 360, background: 'white' }}>
-                        <Component />
-                    </div>
+                    <Row>
+                        <Col span={18} offset={3}>
+                            <Component />
+                        </Col>
+                    </Row>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
                     built by <a href="https://twitter.com/cagince_">@cagince_</a> using ❤️ and ☕ 

@@ -17,7 +17,7 @@ const StyledProductsMenuWrapper = styled.div`
 const ProductRoutes = [
     { key: 'earn', label: 'Earn', path: '/products/earn' },
     { key: 'zap', label: 'Zap', path: '/products/zap' },
-    { key: 'abr', label: 'APR', path: '/products/apr' },
+    { key: 'apr', label: 'APR', path: '/products/apr' },
     { key: 'vaults', label: 'Vaults', path: '/products/vaults' },
 ];
 
