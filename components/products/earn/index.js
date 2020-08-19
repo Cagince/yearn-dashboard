@@ -40,7 +40,7 @@ const assetsOfType = (assets, type) => assets.filter(asset =>
 );
 
 const AssetTypeRadioButtons = ({ value, handleChange }) => (
-    <Space direction="vertical">
+    <Space direction="vertical" style={{ marginBottom: '1em' }}>
         <Radio.Group {...{ buttonStyle: 'solid', value, onChange: e => handleChange(e.target.value)}}>
             {ASSET_TYPES.map(value => (
                 <Radio.Button {...{ key: `asset-type-${value}`, value, children: value }} />
@@ -78,7 +78,7 @@ const EarnProductView = () => {
                     expandIcon: ({ record }) => record.symbol,
                     expandedRowKeys: [activeAsset?.key],
                     onExpand: (expanded, record) => setActiveAsset(expanded ? record : null),
-                    expandedRowRender: record => <div>expanded</div>,
+                    expandedRowRender: record => <div>todo;</div>,
                 }
             }}/>
         </div>
