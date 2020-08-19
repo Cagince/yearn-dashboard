@@ -1,6 +1,8 @@
 import { useSelector, useDispatch } from "react-redux";
-import { Space, Radio, Table } from "antd";
+import { Form, Card, Row, Col, Space, Radio, Table, Input, Button, Slider, Divider, InputNumber } from "antd";
 import { useState } from "react";
+import styled from 'styled-components';
+import { useForm } from "antd/lib/form/Form";
 
 const calculateInterestRate = asset => asset.maxApr ? (asset.maxApr * 100).toFixed(4) + ' %' : 'N/A';
 
@@ -9,6 +11,7 @@ const columns = [
         title: 'Asset',
         dataIndex: 'name',
         key: 'name',
+        render: (_, record) => record.description
     },
     {
         title: 'Interest Rate',
@@ -50,6 +53,89 @@ const AssetTypeRadioButtons = ({ value, handleChange }) => (
 );
 //#endregion
 
+const StyledAssedDetailCard = styled(Card)`
+
+    .ant-card-body {
+        .ant-form-item {
+            &:last-of-type {
+                margin-bottom: 1em;
+            }
+        }
+    }
+
+    .ant-form-item-control-input-content {
+        display: flex;
+        flex-direction: column;
+
+        .ant-input-number-lg {
+            width: 100%;
+        }
+        
+        label {
+            width: 100%;
+            text-align: right;
+            font-weight: 700;
+            margin-bottom: 0.5em;
+        }
+    }
+
+    button {
+        text-transform: capitalize
+    }
+
+`;
+
+const SLIDER_MARKS = {
+    0: '0%',
+    25: '25%',
+    50: '50%',
+    75: '75%',
+    100: '100%',
+}
+
+const ASSET_DETAIL_TABS = [
+    { key: 'earn', tab: 'earn' },
+    { key: 'claim', tab: 'claim' }
+];
+
+const ACTION_TO_PREFIX = {
+    earn: 'Balance',
+    claim: ''
+}
+
+const AssetDetail = ({ activeAsset = {} }) => {
+    const max = 1234;
+    const [form] = useForm();
+    const [action, setAction] = useState(ASSET_DETAIL_TABS[0].key);
+    const [amount, setAmount] = useState(0);
+    const [percentage, setPercentage] = useState(0);
+
+    return (
+        <StyledAssedDetailCard 
+            tabList={ASSET_DETAIL_TABS} 
+            onTabChange={setAction}
+        >
+            <Form {...{ form }}>
+                <Form.Item name="earn">
+                    {activeAsset &&
+                        <label>
+                            {ACTION_TO_PREFIX[action]} {activeAsset.name}
+
+                        </label>
+                    }
+                    <InputNumber size="large" onChange={setAmount} value={amount} />
+                </Form.Item>
+                <Form.Item name="percentage">
+                    <Slider marks={SLIDER_MARKS} value={percentage} onChange={setPercentage} tooltipPlacement="bottom" tipFormatter={value => `${value}%`}/>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">{action}</Button>
+                </Form.Item>
+            </Form>
+        </StyledAssedDetailCard>
+    );
+}
+
 const useAssets = () => {
     const assets = useSelector(state => state.assets);
     const dispatch = useDispatch();
@@ -63,25 +149,40 @@ const useAssets = () => {
 const EarnProductView = () => {
     const { assets } = useAssets();
     const [assetType, setAssetType ] = useState(ASSET_TYPES[1]);
-    const [activeAsset, setActiveAsset] = useState(null);
+    const [activeAsset, setActiveAsset] = useState(undefined);
 
     return (
-        <div>
-            <AssetTypeRadioButtons {...{ value: assetType, handleChange: setAssetType }} />
-            <Table {...{
-                columns,
-                dataSource: assetsOfType(assets, assetType),
-                showHeader: false,
-                pagination: false,
-                expandable: {
-                    expandRowByClick: true,
-                    expandIcon: ({ record }) => record.symbol,
-                    expandedRowKeys: [activeAsset?.key],
-                    onExpand: (expanded, record) => setActiveAsset(expanded ? record : null),
-                    expandedRowRender: record => <div>todo;</div>,
-                }
-            }}/>
-        </div>
+        <>
+            <Row><Col span={24}><AssetTypeRadioButtons {...{ value: assetType, handleChange: setAssetType }} /></Col></Row>
+            <Row gutter={[16, 16]}>
+                <Col span={18}>
+                    <Table {...{
+                        columns,
+                        dataSource: assetsOfType(assets, assetType),
+                        showHeader: false,
+                        pagination: false,
+                        expandable: {
+                            expandRowByClick: true,
+                            expandIcon: ({ record }) => record.symbol,
+                            expandedRowKeys: [activeAsset?.key],
+                            onExpand: (expanded, record) => setActiveAsset(expanded ? record : null),
+                            expandedRowRender: record => <div>todo;</div>,
+                        }
+                    }}/>
+                    <Divider />
+                    <Card 
+                        title={`What is earn (${assetType})`} 
+                        extra={<a href="https://www.learnyearn.finance/earn/coming-soon...">learn more</a>} 
+                    >
+                        Convert supported tokens into y-wrapped interest bearing tokens (eg. DAI to yDAI) <br />
+                        similar to: a money market fund
+                    </Card>
+                </Col>
+                <Col span={6}>
+                    <AssetDetail {...{ activeAsset }} />
+                </Col>
+            </Row>
+        </>
     );
 }
 
